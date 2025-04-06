@@ -1,4 +1,4 @@
-import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Todo } from './schema/todo.schema';
@@ -39,8 +39,8 @@ export class TodoService {
     this.logger.log(`Updating todo: ${id} for user: ${userId}`);
     const todo = await this.todoModel.findById(id);
     if (!todo || todo.userId !== userId) {
-      this.logger.warn(`Unauthorized update attempt for todo: ${id}`);
-      throw new UnauthorizedException();
+      this.logger.warn(`Failed update attempt for todo: ${id} - not found`);
+      throw new NotFoundException();
     }
     Object.assign(todo, updateTodoDto);
     const updated = await todo.save();
@@ -52,8 +52,8 @@ export class TodoService {
     this.logger.log(`Removing todo: ${id} for user: ${userId}`);
     const todo = await this.todoModel.findById(id);
     if (!todo || todo.userId !== userId) {
-      this.logger.warn(`Unauthorized remove attempt for todo: ${id}`);
-      throw new UnauthorizedException();
+      this.logger.warn(`Failed remove attempt for todo: ${id} - not found`);
+      throw new NotFoundException();
     }
     const deleted = await this.todoModel.findByIdAndDelete(id);
     this.logger.log(`Todo deleted: ${id}`);
