@@ -23,7 +23,7 @@ export class TodoController {
   constructor(private readonly todoService: TodoService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Register a new todo' })
+  @ApiOperation({ summary: 'Create a new todo' })
   create(@Body() dto: CreateTodoDto, @CurrentUser() user: { userId: string }) {
     return this.todoService.create(dto, user.userId);
   }

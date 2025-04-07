@@ -12,6 +12,7 @@ export class SignUpDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
+  @MinLength(3, { message: 'Name cannot be less than 3 charcters.' })
   readonly name: string;
 
   @ApiProperty()

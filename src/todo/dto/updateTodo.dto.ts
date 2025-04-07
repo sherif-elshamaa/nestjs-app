@@ -1,13 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-import { IsString, IsIn } from 'class-validator';
+import { IsString, IsIn, IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateTodoDto {
-  @ApiProperty({ required: false })
+  @ApiProperty({ required: true })
+  @IsNotEmpty()
   @IsString()
   task?: string;
 
-  @ApiProperty({ required: false, enum: ['pending', 'in-progress', 'done'] })
+  @ApiProperty({ required: true, enum: ['pending', 'in-progress', 'done'] })
+  @IsNotEmpty()
   @IsIn(['pending', 'in-progress', 'done'])
   status?: string;
 }
